@@ -1,0 +1,11 @@
+__pycache__/
+fastapi/
+.env
+
+#Mac
+.DS_store
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
