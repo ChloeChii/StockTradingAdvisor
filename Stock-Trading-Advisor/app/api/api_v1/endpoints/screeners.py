@@ -1,10 +1,10 @@
-from typing import Any, List
 from datetime import date
-from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
+from typing import Any, List
 
 from app import crud, schemas
 from app.api import deps
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
 
 router = APIRouter()
 
@@ -48,10 +48,10 @@ def get_price_by_filters(
                 column += elements[j]
             elif elements[j].isalnum(): #number mix alphabets or pure alphabets
                 column += '"{}"'.format(elements[j])
-            else:
-                column += elements[j]
+            else: #all alphabet, 
+                column += elements[j]  #colum =close
             if j != len(elements)-1:
-                column += " "
+                column += " " 
         if symbol.lower() == "between":
             value1, value2 = filter[i+2], filter[i+3]
             formated_filter.append('{} {} {} AND {}'.format(column, symbol, value1, value2))

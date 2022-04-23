@@ -18,11 +18,27 @@ class CRUDItem(CRUDBase[Price, Any, Any]):
         return (
             cur.all()
         )
-        #TODO
     def get_prices_by_filter(
         self, db: Session, date, filter, sortby, order) -> List[Price]:
         cond_sql = ' AND '.join(filter)
-        sql = 'WITH s AS(SELECT "Symbol" FROM overview WHERE {}) \
+        # 0422 add Open,Close,High,Low indices
+        # JHCHI
+        # add lines +10 start from next line
+        # purpose: deal with open/close/high/low price
+        filt = filter[0].split()[0]
+        if "Open" in filt or "Close" in filt or "High" in filt or "Low" in filt:
+            sql = 'SELECT * FROM ( \
+            WITH s AS(SELECT "Symbol" FROM overview) \
+            SELECT * FROM price \
+            right JOIN s \
+            ON price.symbol = s."Symbol" \
+            WHERE timestamp = {} \
+            ORDER BY {} {} \
+            ) as x where {} \
+            '.format("'{}'".format(date),  sortby, order, cond_sql.lower())    
+
+        else:
+            sql = 'WITH s AS(SELECT "Symbol" FROM overview WHERE {}) \
             SELECT * FROM price \
             right JOIN s \
             ON price.symbol = s."Symbol" \
