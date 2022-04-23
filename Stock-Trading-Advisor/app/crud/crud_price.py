@@ -23,8 +23,8 @@ class CRUDItem(CRUDBase[Price, Any, Any]):
         cond_sql = ' AND '.join(filter)
         # 0422 add Open,Close,High,Low indices
         # JHCHI
-        # add lines +10 start from next line
         # purpose: deal with open/close/high/low price
+        # add 11 lines start from next line
         filt = filter[0].split()[0]
         if "Open" in filt or "Close" in filt or "High" in filt or "Low" in filt:
             sql = 'SELECT * FROM ( \
