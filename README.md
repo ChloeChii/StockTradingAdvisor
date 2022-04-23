@@ -1,8 +1,4 @@
 # StockTradingAdvisor
-git config -l
-
-
-
 
 #Change Log
 before 0422 : add front-end endpoint in Stock-Trading-App/.env file
