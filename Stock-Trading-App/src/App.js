@@ -1,17 +1,18 @@
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import React from 'react';
-import { Routes, Route, Link } from "react-router-dom";
 import { useCookies } from 'react-cookie';
-import { useDispatch } from 'react-redux'
-import { storeToken } from './features/account/accountSlice'
+import { useDispatch } from 'react-redux';
+import { Route, Routes } from "react-router-dom";
+import './App.css';
+import { storeToken } from './features/account/accountSlice';
 import ResponsiveAppBar from './features/responsiveAppBar/ResponsiveAppBar';
+import LoginPage from './pages/loginPage';
+import PortfolioDetailPage from './pages/portfolioDetailPage';
+import PortfolioPage from './pages/portfolioPage';
 import ScreenerPage from './pages/screenerPage';
 import SignUpPage from './pages/signUpPage';
-import LoginPage from './pages/loginPage';
-import PortfolioPage from './pages/portfolioPage';
-import PortfolioDetailPage from './pages/portfolioDetailPage';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import './App.css';
+
 
 // Set the primarty theme color
 const theme = createTheme({
