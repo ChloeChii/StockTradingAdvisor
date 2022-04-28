@@ -9,7 +9,7 @@ const columns = [
     { field: 'close', headerName: 'Close', width: 130 },
     { field: 'adjusted_close', headerName: 'Adjusted Close', width: 150 },
     { field: 'volume', headerName: 'Volume', width: 150 },
-    { field: 'date', headerName: 'Date', width: 150}
+    { field: 'timestamp', headerName: 'Date', width: 150}
 ];
 
 // Data table for display search result
