@@ -6,11 +6,13 @@ import { Route, Routes } from "react-router-dom";
 import './App.css';
 import { storeToken } from './features/account/accountSlice';
 import ResponsiveAppBar from './features/responsiveAppBar/ResponsiveAppBar';
+import BacktestPage from './pages/backtestPage';
 import LoginPage from './pages/loginPage';
 import PortfolioDetailPage from './pages/portfolioDetailPage';
 import PortfolioPage from './pages/portfolioPage';
 import ScreenerPage from './pages/screenerPage';
 import SignUpPage from './pages/signUpPage';
+
 
 
 
@@ -41,6 +43,7 @@ const App = () => {
             <Routes>
                 <Route path="/" element={<ScreenerPage />} />
                 <Route path="/screener" element={<ScreenerPage />} />
+                <Route path="/backtest" element={<BacktestPage />} />
                 <Route path="/signup" element={<SignUpPage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/portfolio" element={<PortfolioPage />} />

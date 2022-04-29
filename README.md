@@ -10,6 +10,12 @@ before 0422 : add front-end endpoint in Stock-Trading-App/.env file
 3. DataTable.js
  - add date field in the search result page
 
-#TODO
-1. customized formula filter
-2. get "date" from backend and show in search result page
+0427
+1. get "date" from backend and show in search result page
+
+0429 add backtest UI
+1. features/backtest/Backtest.js
+2. features/backtestFilter/backtestFilter.js
+3. pages/backtestPage.js
+4. add backtest route in App.js
+
