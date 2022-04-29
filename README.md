@@ -7,8 +7,8 @@ before 0422 : add front-end endpoint in Stock-Trading-App/.env file
  - enable alphabetical-order filter
 2. crud_price.py 
  - users can filter stocks by Open/Close/High/Low price
-3. DataTable.js
- - add date field in the search result page
+3. DataTable.js, 
+ - add timestamp field in the search result page
 
 0427
 1. get "date" from backend and show in search result page
