@@ -19,3 +19,18 @@ class Price(Base):
     volume = Column(Float)
     dividend_amount = Column(Float)
     split_coefficient = Column(Float)
+    profit = Column(Float)
+    
+    
+class BacktestPrice(Base):
+    timestamp = Column(Date, primary_key=True)
+    symbol = Column(String, primary_key=True)
+    open = Column(Float)
+    high = Column(Float)
+    low = Column(Float)
+    close = Column(Float)
+    adjusted_close = Column(Float)
+    volume = Column(Float)
+    dividend_amount = Column(Float)
+    split_coefficient = Column(Float)
+    profit = Column(Float)

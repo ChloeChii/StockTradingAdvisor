@@ -1,7 +1,7 @@
 from typing import Any, List
 
 from app.crud.base import CRUDBase
-from app.models.price import Price
+from app.models.price import Price, BacktestPrice
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 
@@ -49,5 +49,5 @@ class CRUDItem(CRUDBase[Price, Any, Any]):
         return (
             cur.all()
         )
-price = CRUDItem(Price)
 
+price = CRUDItem(Price)
