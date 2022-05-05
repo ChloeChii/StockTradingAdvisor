@@ -51,7 +51,7 @@ export default function Screener() {
         let newCondition = [...conditions];
         newCondition.push({
             filterIdx: 0,
-            formula: "",
+            formula: "Date",
             comparison: "",
             value1: 0,
             value2: 0,
@@ -173,7 +173,11 @@ export default function Screener() {
                                         style={{ backgroundColor: "#707070" }}
                                         onClick={() => addItem(true)}
                                     >
+<<<<<<< HEAD
                                         + Date
+=======
+                                        + DATE
+>>>>>>> f3d20d6 (Change Backtest filter)
                                     </Button>
                                 </Grid>
                             </Grid>
