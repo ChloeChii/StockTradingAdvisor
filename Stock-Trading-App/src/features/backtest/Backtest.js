@@ -10,7 +10,7 @@ import * as React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import ScreenerAPI from '../../api/ScreenerAPI';
 import DataTable from '../dataTable/DataTable';
-import SelectFilter from '../selectFilter/SelectFilter';
+import BacktestFilter from '../backtestFilter/BacktestFilter';
 
 
 
@@ -51,7 +51,7 @@ export default function Screener() {
         let newCondition = [...conditions];
         newCondition.push({
             filterIdx: 0,
-            formula: "",
+            formula: "Date",
             comparison: "",
             value1: 0,
             value2: 0,
@@ -126,7 +126,7 @@ export default function Screener() {
                         <div>
                             <Stack spacing={2}>
                                 {conditions.map((condition, index) =>
-                                    <SelectFilter
+                                    <BacktestFilter
                                         key={condition.id}
                                         filterList={filterList}
                                         itemIndex={index}
@@ -173,7 +173,7 @@ export default function Screener() {
                                         style={{ backgroundColor: "#707070" }}
                                         onClick={() => addItem(true)}
                                     >
-                                        + ADVANCED
+                                        + DATE
                                     </Button>
                                 </Grid>
                             </Grid>

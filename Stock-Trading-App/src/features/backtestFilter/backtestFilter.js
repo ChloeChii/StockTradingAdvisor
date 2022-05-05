@@ -20,7 +20,7 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 
-export default function SelectFilter(props) {
+export default function BacktestFilter(props) {
 
     const {
         filterList,
@@ -84,8 +84,9 @@ export default function SelectFilter(props) {
                             </FormControl>
                             :
                             <TextField
-                                id="standard-basic-value2"
-                                label="Custom formula"
+                                disabled
+                                id="standard-disabled"
+                                label="Date"
                                 variant="outlined"
                                 value={conditionItem.formula}
                                 onChange={(e) => {
@@ -146,7 +147,7 @@ export default function SelectFilter(props) {
                         >
                             <TextField
                                 id="standard-basic-value1"
-                                label="Value"
+                                label="Date"
                                 variant="outlined"
                                 fullWidth
                                 value={conditionItem.value1}
@@ -197,7 +198,7 @@ export default function SelectFilter(props) {
                         >
                             <TextField
                                 id="standard-basic-value2"
-                                label="Value"
+                                label="Date"
                                 variant="outlined"
                                 fullWidth
                                 value={conditionItem.value2}
