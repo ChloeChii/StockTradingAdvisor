@@ -102,7 +102,7 @@ export default function Screener() {
             {/* data.push(conditions[i]['date1']);*/}
         }
         console.log(data);
-        const res = await ScreenerAPI.SearchByFilter(data);
+        const res = await ScreenerAPI.BacktestFilter(data);
         console.log(res);
         for (var i = 0; i < res.length; i++) {
             res[i]['id'] = i;
