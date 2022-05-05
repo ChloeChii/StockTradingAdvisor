@@ -19,6 +19,9 @@ class Price(BaseModel):
     class Config:
         orm_mode = True
         
+class BacktestPrice(Price):
+    profit: float
+        
 
 # class PriceIn(Price):
 #     timestamp: date
