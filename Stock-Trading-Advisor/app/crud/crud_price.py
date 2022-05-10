@@ -1,7 +1,7 @@
 from typing import Any, List
 
 from app.crud.base import CRUDBase
-from app.models.price import Price, BacktestPrice
+from app.models.price import BacktestPrice, Price
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 
@@ -30,7 +30,7 @@ class CRUDItem(CRUDBase[Price, Any, Any]):
 
         if "open" in filt or "close" in filt or "high" in filt or "low" in filt:
             sql = 'SELECT * FROM ( \
-            WITH s AS(SELECT "Symbol" FROM overview) \
+            WITH s AS(SELECT * FROM overview) \
             SELECT * FROM price \
             right JOIN s \
             ON price.symbol = s."Symbol" \
