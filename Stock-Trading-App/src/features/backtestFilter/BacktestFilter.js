@@ -147,7 +147,7 @@ export default function BacktestFilter(props) {
                         >
                             <TextField
                                 id="standard-basic-value1"
-                                label="Date"
+                                label="Value"
                                 variant="outlined"
                                 fullWidth
                                 value={conditionItem.value1}
@@ -198,7 +198,7 @@ export default function BacktestFilter(props) {
                         >
                             <TextField
                                 id="standard-basic-value2"
-                                label="Date"
+                                label="Value"
                                 variant="outlined"
                                 fullWidth
                                 value={conditionItem.value2}
