@@ -26,7 +26,7 @@ class CRUDItem(CRUDBase[Price, Any, Any]):
         # purpose: deal with open/close/high/low price
         # add 11 lines start from next line
         filt = filter[0].split()[0]
-        if "Open" in filt or "Close" in filt or "High" in filt or "Low" in filt:
+        if "open" in filt or "close" in filt or "high" in filt or "low" in filt:
             sql = 'SELECT * FROM ( \
             WITH s AS(SELECT "Symbol" FROM overview) \
             SELECT * FROM price \

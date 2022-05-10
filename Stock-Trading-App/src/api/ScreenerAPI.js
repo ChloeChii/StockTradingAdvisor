@@ -44,7 +44,7 @@ const ScreenerAPI = {
     BacktestFilter: async (data) => {
         try {
             const res = await axios.post(
-                process.env.REACT_APP_API_ENDPOINT + "/api/v1/screeners/backtest?dateIn=2021-07-13&dateOut=2022-01-09&startsortby=volume%20%2A%20close&order=DESC",
+                process.env.REACT_APP_API_ENDPOINT + "/api/v1/screeners/backtest?dateIn=2021-07-13&dateOut=2022-01-19&sortby=volume*close&order=DESC",
                 data,
                 {
                     'Content-Type': 'application/json'

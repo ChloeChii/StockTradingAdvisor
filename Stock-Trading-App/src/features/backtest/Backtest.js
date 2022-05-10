@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import ScreenerAPI from '../../api/ScreenerAPI';
-import DataTable from '../dataTable/DataTable';
+import BacktestDataTable from '../dataTable/BacktestDataTable';
 import BacktestFilter from '../backtestFilter/BacktestFilter';
 
 
@@ -51,7 +51,7 @@ export default function Screener() {
         let newCondition = [...conditions];
         newCondition.push({
             filterIdx: 0,
-            formula: "Date",
+            formula: "",
             comparison: "",
             value1: 0,
             value2: 0,
@@ -173,7 +173,7 @@ export default function Screener() {
                                         style={{ backgroundColor: "#707070" }}
                                         onClick={() => addItem(true)}
                                     >
-                                        + DATE
+                                        + Date
                                     </Button>
                                 </Grid>
                             </Grid>
@@ -208,7 +208,7 @@ export default function Screener() {
                     my: 5,
                 }}
             >
-                <DataTable stock_json={stockJson} />
+                <BacktestDataTable stock_json={stockJson} />
             </Box>
         </>
     );
