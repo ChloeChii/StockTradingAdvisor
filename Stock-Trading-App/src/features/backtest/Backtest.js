@@ -20,7 +20,7 @@ export default function Screener() {
 
     const [filterList, setFilterList] = React.useState([]);
     const [stockJson, setStockJson] = React.useState([]);
-    const [conditions, setConditions] = React.useState([])
+    const [conditions, setConditions] = React.useState([]);
 
     // Get filter list and set it to the state
     React.useEffect(async () => {
@@ -48,6 +48,12 @@ export default function Screener() {
 
     // Add new filter
     const addItem = (isAdvanced) => {
+        // Limit dateItem to 1
+        if (isAdvanced) {
+          for (var i = 0; i < conditions.length; i++) {
+            if (conditions[i].isAdvanced) return;
+          } 
+        }
         let newCondition = [...conditions];
         newCondition.push({
             filterIdx: 0,
@@ -74,11 +80,10 @@ export default function Screener() {
         // POST request
         console.log(conditions);
         let data = [];
+        let dateIn = "2021-07-13", dateOut = "2022-01-19";
         for (var i = 0; i < conditions.length; i++) {
             // If this is the advance filter
-            if (conditions[i]['isAdvanced'] == true) {
-                data.push(conditions[i]['formula']);
-            } else {
+            if (conditions[i]['isAdvanced'] != true) {
                 data.push(filterList[conditions[i]['filterIdx']]['filter_name']);
             }
             if (conditions[i]['comparison'] === 10) {
@@ -95,14 +100,20 @@ export default function Screener() {
                 data.push(conditions[i]['value1']);
             } else {
                 // If comparison is between 
-                data.push('BETWEEN');
-                data.push(conditions[i]['value1']);
-                data.push(conditions[i]['value2']);
+                if (conditions[i].isAdvanced) {
+                  dateIn = conditions[i]['value1'];
+                  dateOut = conditions[i]['value2'];
+                } else {
+                  data.push('BETWEEN');
+                  data.push(conditions[i]['value1']);
+                  data.push(conditions[i]['value2']);
+                }
             }
             {/* data.push(conditions[i]['date1']);*/}
         }
-        console.log(data);
-        const res = await ScreenerAPI.BacktestFilter(data);
+        console.log(data, dateIn, dateOut);
+        //const res = 1;
+        const res = await ScreenerAPI.BacktestFilter(data, dateIn, dateOut);
         console.log(res);
         for (var i = 0; i < res.length; i++) {
             res[i]['id'] = i;

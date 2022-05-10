@@ -113,6 +113,8 @@ export default function BacktestFilter(props) {
                             md={6}
                             style={{ padding: 6 }}
                         >
+                        { 
+                            conditionItem.isAdvanced == false ? 
                             <FormControl fullWidth>
                                 <InputLabel id="demo-simple-select-label">Comparator</InputLabel>
                                 <Select
@@ -131,6 +133,23 @@ export default function BacktestFilter(props) {
                                     <MenuItem value={40}>between</MenuItem>
                                 </Select>
                             </FormControl>
+                            :
+                            <FormControl fullWidth>
+                                <InputLabel id="demo-simple-select-label">Comparator</InputLabel>
+                                <Select
+                                    labelId="demo-simple-select-label"
+                                    id="demo-simple-select"
+                                    value={conditionItem.comparison}
+                                    label="Comparator"
+                                    name="Comparator"
+                                    onChange={(e) => {
+                                        handleStateChange(e, "comparison")
+                                    }}
+                                >
+                                    <MenuItem value={40}>between</MenuItem>
+                                </Select>
+                            </FormControl>
+                        }
                         </Grid>
                     }
                     {

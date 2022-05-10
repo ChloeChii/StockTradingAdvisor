@@ -6,11 +6,11 @@ const columns = [
     { field: 'open', headerName: 'Open', width: 110 },
     { field: 'high', headerName: 'High', width: 110 },
     { field: 'low', headerName: 'Low', width: 110 },
-    { field: 'close', headerName: 'Close', width: 130 },
+    { field: 'close', headerName: 'Close', width: 110 },
     { field: 'adjusted_close', headerName: 'Adjusted Close', width: 130 },
-    { field: 'volume', headerName: 'Volume', width: 130 },
-    { field: 'timestamp', headerName: 'Date', width: 130},
-    { field: 'profit', headerName: 'Profit', width: 130}
+    { field: 'volume', headerName: 'Volume', width: 110 },
+    { field: 'timestamp', headerName: 'Date', width: 110 },
+    { field: 'profit', headerName: 'Profit', width: 190 }
 ];
 
 // Data table for display search result
