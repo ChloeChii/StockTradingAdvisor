@@ -84,7 +84,9 @@ def isFormulaSatisfied(stock, overview, formula, comparison, value1, value2):
 #            print(eval(str(formulaValue) + comparison + str(value1)))
             return eval(str(formulaValue) + comparison + str(value1))
             
-    except TypeError, ZeroDivisionError: # Return false if any value not exist, or divide by zero, or etc.
+    except TypeError: # Return false if any value not exist, or divide by zero, or etc.
+        return False
+    except ZeroDivisionError:
         return False
         
 def filtering(db, date, filter, sortby, order):
