@@ -11,6 +11,7 @@ import { v4 as uuidv4 } from 'uuid';
 import ScreenerAPI from '../../api/ScreenerAPI';
 import BacktestDataTable from '../dataTable/BacktestDataTable';
 import BacktestFilter from '../backtestFilter/BacktestFilter';
+import moment from 'moment';
 
 
 
@@ -62,6 +63,7 @@ export default function Screener() {
             value1: 0,
             value2: 0,
             isAdvanced: isAdvanced,
+            error: false,
             id: uuidv4(),
         });
         setConditions(newCondition);
@@ -81,6 +83,7 @@ export default function Screener() {
         console.log(conditions);
         let data = [];
         let dateIn = "2021-07-13", dateOut = "2022-01-19";
+        let dateIdx;
         for (var i = 0; i < conditions.length; i++) {
             // If this is the advance filter
             if (conditions[i]['isAdvanced'] != true) {
@@ -103,6 +106,7 @@ export default function Screener() {
                 if (conditions[i].isAdvanced) {
                   dateIn = conditions[i]['value1'];
                   dateOut = conditions[i]['value2'];
+                  dateIdx = i;
                 } else {
                   data.push('BETWEEN');
                   data.push(conditions[i]['value1']);
@@ -112,6 +116,19 @@ export default function Screener() {
             {/* data.push(conditions[i]['date1']);*/}
         }
         console.log(data, dateIn, dateOut);
+        if(!moment(dateIn, 'YYYY-MM-DD', true).isValid() || !moment(dateOut, 'YYYY-MM-DD', true).isValid()) {
+          console.log("error");
+          let newConditions = [...conditions];
+          newConditions[dateIdx]['error'] = true; 
+          newConditions[dateIdx]['error'] = true; 
+          setConditions(newConditions);
+          return;
+        } else {
+          let newConditions = [...conditions];
+          newConditions[dateIdx]['error'] = false; 
+          newConditions[dateIdx]['error'] = false; 
+          setConditions(newConditions);
+        }
         //const res = 1;
         const res = await ScreenerAPI.BacktestFilter(data, dateIn, dateOut);
         console.log(res);

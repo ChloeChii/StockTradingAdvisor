@@ -164,6 +164,8 @@ export default function BacktestFilter(props) {
                             justifyContent="flex-start"
                             style={{ padding: 6 }}
                         >
+                        {
+                            conditionItem.error == false ? 
                             <TextField
                                 id="standard-basic-value1"
                                 label="Value"
@@ -174,6 +176,19 @@ export default function BacktestFilter(props) {
                                     handleStateChange(e, "value1")
                                 }}
                             />
+                            :
+                            <TextField
+                                error
+                                id="standard-basic-value1"
+                                label="Value"
+                                variant="outlined"
+                                fullWidth
+                                value={conditionItem.value1}
+                                onChange={(e) => {
+                                    handleStateChange(e, "value1")
+                                }}
+                            />
+                        }
                         </Grid>
                     }
                     {/*
@@ -215,6 +230,8 @@ export default function BacktestFilter(props) {
                             justifyContent="flex-start"
                             style={{ padding: 6 }}
                         >
+                        {
+                            conditionItem.error == false ? 
                             <TextField
                                 id="standard-basic-value2"
                                 label="Value"
@@ -225,6 +242,19 @@ export default function BacktestFilter(props) {
                                     handleStateChange(e, "value2")
                                 }}
                             />
+                            :
+                            <TextField
+                                error
+                                id="standard-basic-value2"
+                                label="Value"
+                                variant="outlined"
+                                fullWidth
+                                value={conditionItem.value2}
+                                onChange={(e) => {
+                                    handleStateChange(e, "value2")
+                                }}
+                            />
+                        }
                         </Grid>
                     }
                 </Grid>
