@@ -1,7 +1,7 @@
 from typing import Any, List
 
 from app.crud.base import CRUDBase
-from app.models.price import Price, BacktestPrice
+from app.models.price import Price
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 
@@ -18,6 +18,14 @@ class CRUDItem(CRUDBase[Price, Any, Any]):
         return (
             cur.all()
         )
+        
+    def get_overview_by_date(
+        self, db: Session, date, sortby, order) -> List[Price]:
+        cur = db.execute('SELECT * FROM overview')
+        return (
+            cur.all()
+        )
+        
     def get_prices_by_filter(
         self, db: Session, date, filter, sortby, order) -> List[Price]:
         cond_sql = ' AND '.join(filter)
@@ -30,7 +38,7 @@ class CRUDItem(CRUDBase[Price, Any, Any]):
 
         if "open" in filt or "close" in filt or "high" in filt or "low" in filt:
             sql = 'SELECT * FROM ( \
-            WITH s AS(SELECT "Symbol" FROM overview) \
+            WITH s AS(SELECT * FROM overview) \
             SELECT * FROM price \
             right JOIN s \
             ON price.symbol = s."Symbol" \
