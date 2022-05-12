@@ -83,7 +83,7 @@ export default function Screener() {
         console.log(conditions);
         let data = [];
         let dateIn = "2021-07-13", dateOut = "2022-01-19";
-        let dateIdx;
+        let dateIdx = -1;
         for (var i = 0; i < conditions.length; i++) {
             // If this is the advance filter
             if (conditions[i]['isAdvanced'] != true) {
@@ -125,8 +125,10 @@ export default function Screener() {
           return;
         } else {
           let newConditions = [...conditions];
-          newConditions[dateIdx]['error'] = false; 
-          newConditions[dateIdx]['error'] = false; 
+          if (dateIdx > -1) {
+            newConditions[dateIdx]['error'] = false; 
+            newConditions[dateIdx]['error'] = false; 
+          }
           setConditions(newConditions);
         }
         //const res = 1;
