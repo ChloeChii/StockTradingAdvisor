@@ -9,8 +9,9 @@ import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import ScreenerAPI from '../../api/ScreenerAPI';
-import DataTable from '../dataTable/DataTable';
-import SelectFilter from '../selectFilter/SelectFilter';
+import BacktestDataTable from '../dataTable/BacktestDataTable';
+import BacktestFilter from '../backtestFilter/BacktestFilter';
+import moment from 'moment';
 
 
 
@@ -20,7 +21,7 @@ export default function Screener() {
 
     const [filterList, setFilterList] = React.useState([]);
     const [stockJson, setStockJson] = React.useState([]);
-    const [conditions, setConditions] = React.useState([])
+    const [conditions, setConditions] = React.useState([]);
 
     // Get filter list and set it to the state
     React.useEffect(async () => {
@@ -48,6 +49,12 @@ export default function Screener() {
 
     // Add new filter
     const addItem = (isAdvanced) => {
+        // Limit dateItem to 1
+        if (isAdvanced) {
+          for (var i = 0; i < conditions.length; i++) {
+            if (conditions[i].isAdvanced) return;
+          } 
+        }
         let newCondition = [...conditions];
         newCondition.push({
             filterIdx: 0,
@@ -56,6 +63,7 @@ export default function Screener() {
             value1: 0,
             value2: 0,
             isAdvanced: isAdvanced,
+            error: false,
             id: uuidv4(),
         });
         setConditions(newCondition);
@@ -74,11 +82,11 @@ export default function Screener() {
         // POST request
         console.log(conditions);
         let data = [];
+        let dateIn = "2021-07-13", dateOut = "2022-01-19";
+        let dateIdx;
         for (var i = 0; i < conditions.length; i++) {
             // If this is the advance filter
-            if (conditions[i]['isAdvanced'] == true) {
-                data.push(conditions[i]['formula']);
-            } else {
+            if (conditions[i]['isAdvanced'] != true) {
                 data.push(filterList[conditions[i]['filterIdx']]['filter_name']);
             }
             if (conditions[i]['comparison'] === 10) {
@@ -95,14 +103,34 @@ export default function Screener() {
                 data.push(conditions[i]['value1']);
             } else {
                 // If comparison is between 
-                data.push('BETWEEN');
-                data.push(conditions[i]['value1']);
-                data.push(conditions[i]['value2']);
+                if (conditions[i].isAdvanced) {
+                  dateIn = conditions[i]['value1'];
+                  dateOut = conditions[i]['value2'];
+                  dateIdx = i;
+                } else {
+                  data.push('BETWEEN');
+                  data.push(conditions[i]['value1']);
+                  data.push(conditions[i]['value2']);
+                }
             }
             {/* data.push(conditions[i]['date1']);*/}
         }
-        console.log(data);
-        const res = await ScreenerAPI.SearchByFilter(data);
+        console.log(data, dateIn, dateOut);
+        if(!moment(dateIn, 'YYYY-MM-DD', true).isValid() || !moment(dateOut, 'YYYY-MM-DD', true).isValid()) {
+          console.log("error");
+          let newConditions = [...conditions];
+          newConditions[dateIdx]['error'] = true; 
+          newConditions[dateIdx]['error'] = true; 
+          setConditions(newConditions);
+          return;
+        } else {
+          let newConditions = [...conditions];
+          newConditions[dateIdx]['error'] = false; 
+          newConditions[dateIdx]['error'] = false; 
+          setConditions(newConditions);
+        }
+        //const res = 1;
+        const res = await ScreenerAPI.BacktestFilter(data, dateIn, dateOut);
         console.log(res);
         for (var i = 0; i < res.length; i++) {
             res[i]['id'] = i;
@@ -126,7 +154,7 @@ export default function Screener() {
                         <div>
                             <Stack spacing={2}>
                                 {conditions.map((condition, index) =>
-                                    <SelectFilter
+                                    <BacktestFilter
                                         key={condition.id}
                                         filterList={filterList}
                                         itemIndex={index}
@@ -173,7 +201,7 @@ export default function Screener() {
                                         style={{ backgroundColor: "#707070" }}
                                         onClick={() => addItem(true)}
                                     >
-                                        + ADVANCED
+                                        + Date
                                     </Button>
                                 </Grid>
                             </Grid>
@@ -208,7 +236,7 @@ export default function Screener() {
                     my: 5,
                 }}
             >
-                <DataTable stock_json={stockJson} />
+                <BacktestDataTable stock_json={stockJson} />
             </Box>
         </>
     );

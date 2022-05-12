@@ -20,7 +20,7 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 
-export default function SelectFilter(props) {
+export default function BacktestFilter(props) {
 
     const {
         filterList,
@@ -84,8 +84,9 @@ export default function SelectFilter(props) {
                             </FormControl>
                             :
                             <TextField
-                                id="standard-basic-value2"
-                                label="Custom formula"
+                                disabled
+                                id="standard-disabled"
+                                label="Date"
                                 variant="outlined"
                                 value={conditionItem.formula}
                                 onChange={(e) => {
@@ -112,6 +113,8 @@ export default function SelectFilter(props) {
                             md={6}
                             style={{ padding: 6 }}
                         >
+                        { 
+                            conditionItem.isAdvanced == false ? 
                             <FormControl fullWidth>
                                 <InputLabel id="demo-simple-select-label">Comparator</InputLabel>
                                 <Select
@@ -130,6 +133,23 @@ export default function SelectFilter(props) {
                                     <MenuItem value={40}>between</MenuItem>
                                 </Select>
                             </FormControl>
+                            :
+                            <FormControl fullWidth>
+                                <InputLabel id="demo-simple-select-label">Comparator</InputLabel>
+                                <Select
+                                    labelId="demo-simple-select-label"
+                                    id="demo-simple-select"
+                                    value={conditionItem.comparison}
+                                    label="Comparator"
+                                    name="Comparator"
+                                    onChange={(e) => {
+                                        handleStateChange(e, "comparison")
+                                    }}
+                                >
+                                    <MenuItem value={40}>between</MenuItem>
+                                </Select>
+                            </FormControl>
+                        }
                         </Grid>
                     }
                     {
@@ -144,6 +164,8 @@ export default function SelectFilter(props) {
                             justifyContent="flex-start"
                             style={{ padding: 6 }}
                         >
+                        {
+                            conditionItem.error == false ? 
                             <TextField
                                 id="standard-basic-value1"
                                 label="Value"
@@ -154,6 +176,19 @@ export default function SelectFilter(props) {
                                     handleStateChange(e, "value1")
                                 }}
                             />
+                            :
+                            <TextField
+                                error
+                                id="standard-basic-value1"
+                                label="Value"
+                                variant="outlined"
+                                fullWidth
+                                value={conditionItem.value1}
+                                onChange={(e) => {
+                                    handleStateChange(e, "value1")
+                                }}
+                            />
+                        }
                         </Grid>
                     }
                     {/*
@@ -195,6 +230,8 @@ export default function SelectFilter(props) {
                             justifyContent="flex-start"
                             style={{ padding: 6 }}
                         >
+                        {
+                            conditionItem.error == false ? 
                             <TextField
                                 id="standard-basic-value2"
                                 label="Value"
@@ -205,6 +242,19 @@ export default function SelectFilter(props) {
                                     handleStateChange(e, "value2")
                                 }}
                             />
+                            :
+                            <TextField
+                                error
+                                id="standard-basic-value2"
+                                label="Value"
+                                variant="outlined"
+                                fullWidth
+                                value={conditionItem.value2}
+                                onChange={(e) => {
+                                    handleStateChange(e, "value2")
+                                }}
+                            />
+                        }
                         </Grid>
                     }
                 </Grid>
