@@ -15,60 +15,19 @@ def isFormulaSatisfied(stock, overview, formula, comparison, value1, value2):
     value1 = float(value1)
     value2 = float(value2)
     
-    open = stock["open"]
-    high = stock["high"]
-    low = stock["low"]
-    close = stock["close"]
-    adjusted_close = stock["adjusted_close"]
-    volume = stock["volume"]
-    dividend_amount = stock["dividend_amount"]
-    split_coefficie = stock["split_coefficient"]
-    
-    assettype = overview["AssetType"]
-    name = overview["Name"]
-    description = overview["Description"]
-    exchange = overview["Exchange"]
-    currency = overview["Currency"]
-    country = overview["Country"]
-    sector = overview["Sector"]
-    industry = overview["Industry"]
-    address = overview["Address"]
-    fiscalyearend = overview["FiscalYearEnd"]
-    latestquarter = overview["LatestQuarter"]
-    marketcapitalization = overview["MarketCapitalization"]
-    peratio = overview["PERatio"]
-    pegratio = overview["PEGRatio"]
-    bookvalue = overview["BookValue"]
-    dividendpershare = overview["DividendPerShare"]
-    dividendyield = overview["DividendYield"]
-    eps = overview["EPS"]
-    revenuepersharettm = overview["RevenuePerShareTTM"]
-    profitmargin = overview["ProfitMargin"]
-    operatingmarginttm = overview["OperatingMarginTTM"]
-    returnonassetsttm = overview["ReturnOnAssetsTTM"]
-    returnonequityttm = overview["ReturnOnEquityTTM"]
-    revenuettm = overview["RevenueTTM"]
-    grossprofitttm = overview["GrossProfitTTM"]
-    dilutedepsttm = overview["DilutedEPSTTM"]
-    quarterlyearningsgrowthyoy = overview["QuarterlyEarningsGrowthYOY"]
-    quarterlyrevenuegrowthyoy = overview["QuarterlyRevenueGrowthYOY"]
-    analysttargetprice = overview["AnalystTargetPrice"]
-    trailingpe = overview["TrailingPE"]
-    forwardpe = overview["ForwardPE"]
-    pricetosalesratiottm = overview["PriceToSalesRatioTTM"]
-    pricetobookratio = overview["PriceToBookRatio"]
-    evtorevenue = overview["EVToRevenue"]
-    evtoebitda = overview["EVToEBITDA"]
-    beta = overview["Beta"]
-    d52weekhigh = overview["52WeekHigh"]
-    d52weeklow = overview["52WeekLow"]
-    d50daymovingaverage = overview["50DayMovingAverage"]
-    d200daymovingaverage = overview["200DayMovingAverage"]
-    sharesoutstanding = overview["SharesOutstanding"]
-    dividenddate = overview["DividendDate"]
-    exdividenddate = overview["ExDividendDate"]
-    ebitda = overview["EBITDA"]
-    cik = overview["CIK"]
+    for key in stock.keys():
+        if(key == "timestamp" or key == "symbol"):
+            continue
+        variable = key.lower()
+        exec("%s = stock[\"%s\"]" % (variable, key))
+
+    for key in overview.keys():
+        if(key == "Symbol"):
+            continue
+        variable = key.lower()
+        if(variable[0] == '2' or variable[0] == '5'):
+            variable = "d" + variable
+        exec("%s = overview[\"%s\"]" % (variable, key))
     
     formula = formula.lower()
     formula = formula.replace("52weekhigh", "d52weekhigh").replace("52weeklow", "d52weeklow").replace("50daymovingaverage", "d50daymovingaverage").replace("200daymovingaverage", "d200daymovingaverage")
