@@ -200,8 +200,8 @@ def get_backtest_result(
             newPricesIn[-1]["profit"] = 0.0
             continue
         outPrice = pricesOut[symbolToIndexOut[pricesIn[i]["symbol"]]]["adjusted_close"]
-                
-        newPricesIn[-1]["profit"] = (outPrice - inPrice) / inPrice
+        
+        newPricesIn[-1]["profit"] = round((outPrice - inPrice) * 100 / inPrice, 2)
     
     return newPricesIn
 
