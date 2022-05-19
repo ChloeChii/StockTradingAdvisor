@@ -8,6 +8,9 @@ from sqlalchemy.orm import Session
 
 router = APIRouter()
 
+attributesPrice = ["timestamp", "open", "high", "low", "close", "adjusted_close", "volume", "dividend_amount", "split_coefficient", "symbol"]
+attributesOverview = ["symbol", "assettype", "name", "description", "exchange", "currency", "country", "sector", "industry", "address", "fiscalyearend", "latestquarter", "marketcapitalization", "peratio", "pegratio", "bookvalue", "dividendpershare", "dividendyield", "eps", "revenuepersharettm", "profitmargin", "operatingmarginttm", "returnonassetsttm", "returnonequityttm", "revenuettm", "grossprofitttm", "dilutedepsttm", "quarterlyearningsgrowthyoy", "quarterlyrevenuegrowthyoy", "analysttargetprice", "trailingpe", "forwardpe", "pricetosalesratiottm", "pricetobookratio", "evtorevenue", "evtoebitda", "beta", "52weekhigh", "52weeklow", "50daymovingaverage", "200daymovingaverage", "sharesoutstanding", "dividenddate", "exdividenddate", "ebitda", "cik"]
+
 def isFormulaSatisfied(stock, overview, formula, comparison, value1, value2):
     if(stock["symbol"] != overview["Symbol"]):
         print("symbol not right")
@@ -15,60 +18,19 @@ def isFormulaSatisfied(stock, overview, formula, comparison, value1, value2):
     value1 = float(value1)
     value2 = float(value2)
     
-    open = stock["open"]
-    high = stock["high"]
-    low = stock["low"]
-    close = stock["close"]
-    adjusted_close = stock["adjusted_close"]
-    volume = stock["volume"]
-    dividend_amount = stock["dividend_amount"]
-    split_coefficie = stock["split_coefficient"]
-    
-    assettype = overview["AssetType"]
-    name = overview["Name"]
-    description = overview["Description"]
-    exchange = overview["Exchange"]
-    currency = overview["Currency"]
-    country = overview["Country"]
-    sector = overview["Sector"]
-    industry = overview["Industry"]
-    address = overview["Address"]
-    fiscalyearend = overview["FiscalYearEnd"]
-    latestquarter = overview["LatestQuarter"]
-    marketcapitalization = overview["MarketCapitalization"]
-    peratio = overview["PERatio"]
-    pegratio = overview["PEGRatio"]
-    bookvalue = overview["BookValue"]
-    dividendpershare = overview["DividendPerShare"]
-    dividendyield = overview["DividendYield"]
-    eps = overview["EPS"]
-    revenuepersharettm = overview["RevenuePerShareTTM"]
-    profitmargin = overview["ProfitMargin"]
-    operatingmarginttm = overview["OperatingMarginTTM"]
-    returnonassetsttm = overview["ReturnOnAssetsTTM"]
-    returnonequityttm = overview["ReturnOnEquityTTM"]
-    revenuettm = overview["RevenueTTM"]
-    grossprofitttm = overview["GrossProfitTTM"]
-    dilutedepsttm = overview["DilutedEPSTTM"]
-    quarterlyearningsgrowthyoy = overview["QuarterlyEarningsGrowthYOY"]
-    quarterlyrevenuegrowthyoy = overview["QuarterlyRevenueGrowthYOY"]
-    analysttargetprice = overview["AnalystTargetPrice"]
-    trailingpe = overview["TrailingPE"]
-    forwardpe = overview["ForwardPE"]
-    pricetosalesratiottm = overview["PriceToSalesRatioTTM"]
-    pricetobookratio = overview["PriceToBookRatio"]
-    evtorevenue = overview["EVToRevenue"]
-    evtoebitda = overview["EVToEBITDA"]
-    beta = overview["Beta"]
-    d52weekhigh = overview["52WeekHigh"]
-    d52weeklow = overview["52WeekLow"]
-    d50daymovingaverage = overview["50DayMovingAverage"]
-    d200daymovingaverage = overview["200DayMovingAverage"]
-    sharesoutstanding = overview["SharesOutstanding"]
-    dividenddate = overview["DividendDate"]
-    exdividenddate = overview["ExDividendDate"]
-    ebitda = overview["EBITDA"]
-    cik = overview["CIK"]
+    for key in stock.keys():
+        if(key == "timestamp" or key == "symbol"):
+            continue
+        variable = key.lower()
+        exec("%s = stock[\"%s\"]" % (variable, key))
+
+    for key in overview.keys():
+        if(key == "Symbol"):
+            continue
+        variable = key.lower()
+        if(variable[0] == '2' or variable[0] == '5'):
+            variable = "d" + variable
+        exec("%s = overview[\"%s\"]" % (variable, key))
     
     formula = formula.lower()
     formula = formula.replace("52weekhigh", "d52weekhigh").replace("52weeklow", "d52weeklow").replace("50daymovingaverage", "d50daymovingaverage").replace("200daymovingaverage", "d200daymovingaverage")
@@ -89,7 +51,7 @@ def isFormulaSatisfied(stock, overview, formula, comparison, value1, value2):
     except ZeroDivisionError:
         return False
         
-def filtering(db, date, filter, sortby, order):
+def filtering(db, date, filter, sortby, order, attributes = []):
     stocks = crud.price.get_prices_by_date(db=db, date=date, sortby=sortby, order=order)
     overview = crud.price.get_overview_by_date(db=db, date=date, sortby=sortby, order=order)
     newStocks = []
@@ -114,7 +76,18 @@ def filtering(db, date, filter, sortby, order):
             if(not satisfied):
                 break
         if(satisfied):
-            newStocks.append(stocks[i])
+            if(len(attributes) > 0):
+                d = {}
+                for key in stocks[i].keys():
+                    if(key.lower() in attributes):
+                        d[key.lower()] = stocks[i][key]
+                for key in overview[symbolToIndexOverview[stocks[i]["symbol"]]].keys():
+                    if(key.lower() in attributes):
+                        d[key.lower()] = overview[symbolToIndexOverview[stocks[i]["symbol"]]][key]
+                        
+                newStocks.append(d)
+            else:
+                newStocks.append(stocks[i])
     
     print("new filtered %d stocks" % len(newStocks))
     return newStocks
@@ -150,7 +123,7 @@ def get_price_by_filters(
     return filteredStocks
     
     # preprocess filter
-    # PERatio > 10 / Sector = 'TECHNOLOGY' 
+    # PERatio > 10 / Sector = 'TECHNOLOGY'
     # => WHERE "PERatio" > 10 / WHERE "Sector" = 'TECHNOLOGY'
     # custom filter must be seperated by spaces
 #    formated_filter = []
@@ -209,7 +182,7 @@ def get_category_by_filter(
     return categories
 
 
-@router.post("/backtest", response_model=List[schemas.BacktestPrice])
+@router.post("/backtest")
 def get_backtest_result(
     *,
     db: Session = Depends(deps.get_db),
@@ -223,7 +196,14 @@ def get_backtest_result(
     Retrieve prices by filters.
     """
     
-    pricesIn = filtering(db, dateIn, filter, sortby, order)
+    desiredAttributes = ["symbol", "close"]
+    for f in filter:
+        if(f.lower() in attributesPrice):
+            desiredAttributes.append(f.lower())
+        elif(f.lower() in attributesOverview):
+            desiredAttributes.append(f.lower())
+    
+    pricesIn = filtering(db, dateIn, filter, sortby, order, desiredAttributes)
     
     pricesOut = crud.price.get_prices_by_date(db=db, date=dateOut, sortby=sortby, order=order)
     
@@ -236,15 +216,58 @@ def get_backtest_result(
         d = dict(pricesIn[i])
         newPricesIn.append(d)
         
-        inPrice = pricesIn[i]["adjusted_close"]
+        inPrice = pricesIn[i]["close"]
         if(pricesIn[i]["symbol"] not in symbolToIndexOut):
             newPricesIn[-1]["profit"] = 0.0
             continue
-        outPrice = pricesOut[symbolToIndexOut[pricesIn[i]["symbol"]]]["adjusted_close"]
-                
-        newPricesIn[-1]["profit"] = (outPrice - inPrice) / inPrice
+        outPrice = pricesOut[symbolToIndexOut[pricesIn[i]["symbol"]]]["close"]
+        
+        newPricesIn[-1]["buy price"] = inPrice
+        newPricesIn[-1]["sell price"] = outPrice
+        newPricesIn[-1]["profit (%)"] = round((outPrice - inPrice) * 100 / inPrice, 2)
     
     return newPricesIn
+
+    # preprocess filter
+    # PERatio > 10 / Sector = 'TECHNOLOGY'
+    # => WHERE "PERatio" > 10 / WHERE "Sector" = 'TECHNOLOGY'
+    # custom filter must be seperated by spaces
+#    formated_filter = []
+#    i = 0
+#    while(i < len(filter)):
+#        column, symbol = filter[i], filter[i+1]
+#        elements = column.split(" ")
+#        column = ""
+#        for j in range(len(elements)):
+#            if elements[j].isnumeric(): #pure number
+#                column += elements[j]
+#            elif elements[j].isalnum(): #number mix alphabets or pure alphabets
+#                column += '"{}"'.format(elements[j])
+#            else: #all alphabet,
+#                column += elements[j]  #colum =close
+#            if j != len(elements)-1:
+#                column += " "
+#        if symbol.lower() == "between":
+#            value1, value2 = filter[i+2], filter[i+3]
+#            formated_filter.append('{} {} {} AND {}'.format(column, symbol, value1, value2))
+#            i += 4
+#        else:
+#            value = filter[i+2]
+#            if symbol == "=" :
+#                value = "'{}'".format(value)
+#            formated_filter.append('{} {} {}'.format(column, symbol, value))
+#            i += 3
+#
+#    print(formated_filter)
+#        inPrice = pricesIn[i]["close"]
+#        if(pricesIn[i]["symbol"] not in symbolToIndexOut):
+#            newPricesIn[-1]["profit"] = 0.0
+#            continue
+#        outPrice = pricesOut[symbolToIndexOut[pricesIn[i]["symbol"]]]["close"]
+#
+#        newPricesIn[-1]["profit"] = (outPrice - inPrice) / inPrice
+#
+#    return newPricesIn
 
     # preprocess filter
     # PERatio > 10 / Sector = 'TECHNOLOGY'
