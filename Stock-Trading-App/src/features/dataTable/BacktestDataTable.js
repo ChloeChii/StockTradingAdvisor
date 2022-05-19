@@ -6,15 +6,15 @@ import * as React from 'react';
 const BacktestDataTable = ({stock_json}) => {
 
     const [columns, setColumns] = React.useState([
-      { field: 'symbol', headerName: 'Symbol', width: 110 },
-      { field: 'open', headerName: 'Open', width: 110 },
-      { field: 'high', headerName: 'High', width: 110 },
-      { field: 'low', headerName: 'Low', width: 110 },
-      { field: 'close', headerName: 'Close', width: 110 },
+      { field: 'symbol', headerName: 'Symbol', width: 120 },
+      { field: 'open', headerName: 'Open', width: 120 },
+      { field: 'high', headerName: 'High', width: 120 },
+      { field: 'low', headerName: 'Low', width: 120 },
+      { field: 'close', headerName: 'Close', width: 120 },
       { field: 'adjusted_close', headerName: 'Adjusted Close', width: 130 },
-      { field: 'volume', headerName: 'Volume', width: 110 },
-      { field: 'timestamp', headerName: 'Date', width: 110 },
-      { field: 'profit', headerName: 'Profit', width: 190 }
+      { field: 'volume', headerName: 'Volume', width: 120 },
+      { field: 'timestamp', headerName: 'Date', width: 120 },
+      { field: 'profit', headerName: 'Profit', width: 130 }
     ]);
 
     React.useEffect(() => {
@@ -26,6 +26,9 @@ const BacktestDataTable = ({stock_json}) => {
             newColumns.push({field: key, headerName: str});
           }
         } 
+        for (var i = 0; i < newColumns.length; i++) {
+          newColumns[i]["width"] = 1100 / newColumns.length;
+        }
         setColumns(newColumns);
       }
     }, [stock_json]);
