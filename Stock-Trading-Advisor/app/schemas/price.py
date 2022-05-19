@@ -21,6 +21,11 @@ class Price(BaseModel):
         
 class BacktestPrice(Price):
     profit: float
+
+class Custom(BaseModel):
+    symbol: str
+    class config:
+        orm_mode = True
         
 
 # class PriceIn(Price):
