@@ -6,15 +6,14 @@ import * as React from 'react';
 const BacktestDataTable = ({stock_json}) => {
 
     const [columns, setColumns] = React.useState([
-      { field: 'symbol', headerName: 'Symbol', width: 120 },
-      { field: 'open', headerName: 'Open', width: 120 },
-      { field: 'high', headerName: 'High', width: 120 },
-      { field: 'low', headerName: 'Low', width: 120 },
-      { field: 'close', headerName: 'Close', width: 120 },
-      { field: 'adjusted_close', headerName: 'Adjusted Close', width: 130 },
-      { field: 'volume', headerName: 'Volume', width: 120 },
-      { field: 'timestamp', headerName: 'Date', width: 120 },
-      { field: 'profit', headerName: 'Profit', width: 130 }
+      { field: 'symbol', headerName: 'Symbol', width: 130 },
+      { field: 'open', headerName: 'Open', width: 130 },
+      { field: 'high', headerName: 'High', width: 130 },
+      { field: 'low', headerName: 'Low', width: 130 },
+      { field: 'close', headerName: 'Close', width: 130 },
+      { field: 'adjusted_close', headerName: 'Adjusted Close', width: 150 },
+      { field: 'volume', headerName: 'Volume', width: 150 },
+      { field: 'profit', headerName: 'Profit (%)', width: 150 }
     ]);
 
     React.useEffect(() => {
