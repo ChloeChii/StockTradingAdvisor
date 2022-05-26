@@ -1,10 +1,10 @@
-import * as React from 'react';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import TextField from '@mui/material/TextField';
+import * as React from 'react';
 
 // Dialog component for create portfolio and add new stock
 const NewDialog = (props) => {
@@ -16,6 +16,7 @@ const NewDialog = (props) => {
         newName = "",
         setNewName = () => { },
         createOnClick = () => { }
+        //searchOnClick = () => { }
     } = props;
 
     return (
@@ -43,6 +44,12 @@ const NewDialog = (props) => {
                     />
                 </DialogContent>
                 <DialogActions>
+                    {/* <Button 
+                        onClick={() => { 
+                            searchOnClick();
+                            setOpen(false);
+                        }}
+                    >Search</Button> */}
                     <Button onClick={() => setOpen(false)}>Cancel</Button>
                     <Button
                         onClick={() => {
