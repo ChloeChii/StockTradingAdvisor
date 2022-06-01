@@ -23,7 +23,7 @@ class CRUDItem(CRUDBase[Price, Any, Any]):
         self, db: Session, date, symbol, sortby, order) -> List[Price]:
         cur = db.execute('SELECT * FROM price \
             WHERE symbol = {}  \
-            ORDER BY {} {}'.format(  "'{}'".format(symbol), "'{}'".format(date),sortby, order))
+            ORDER BY {} {}'.format(  "'{}'".format(symbol),  sortby, order))
         return (
             cur.all()
         )
