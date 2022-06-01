@@ -1,11 +1,11 @@
-from typing import Any, List
-from app.models import portfolio
 from datetime import date
-from fastapi import APIRouter, Body, Depends, HTTPException, status
-from sqlalchemy.orm import Session
+from typing import Any, List
 
 from app import crud, models, schemas
 from app.api import deps
+from app.models import portfolio
+from fastapi import APIRouter, Body, Depends, HTTPException, status
+from sqlalchemy.orm import Session
 
 router = APIRouter()
 
@@ -153,3 +153,21 @@ def clean_portfolio(
         )
     
     return item
+
+@router.post("/individualstock")
+def get_prices_by_symbol(
+    *,
+    db: Session = Depends(deps.get_db),
+    date: date = date(2022, 2, 8),
+    filter: List[str] = ["EPS", "BETWEEN", "0", "100", "1 / PERatio", ">", "10"],
+    sortby: str = "timestamp",
+    order: str = "DESC",
+    symbol: str = "AAPL",
+) -> Any:
+    """
+    Retrieve stock info by symbol.
+    """
+    
+    prices = crud.price.get_prices_by_symbol(db=db, symbol=symbol, date=date, sortby=sortby, order=order)
+    
+    return prices
