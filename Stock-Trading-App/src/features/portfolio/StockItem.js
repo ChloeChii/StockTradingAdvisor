@@ -14,10 +14,11 @@ import PortfolioAPI from '../../api/PortfolioAPI';
 const StockItem = (props) => {
 
     const [shouldRaised, setRaised] = React.useState(false);
-    const [stockJson, setStockJson] = React.useState([]);
+    //const [stockJson, setStockJson] = React.useState([]);
     const {
         removeOnClick = () => { },
-        stockName = ""
+        stockName = "",
+        handleStockInfoChange,
     } = props
 
     const searchStock = async (stockName) => {
@@ -29,8 +30,13 @@ const StockItem = (props) => {
         data.push(stockName);
         // console.log(data, symbol);
         const res = await PortfolioAPI.SearchStockBySymbol(data, stockName);
-        console.log("res:" + res);
-        setStockJson(res);
+        //console.log("res:" + res);
+        console.log(res);
+        for (var i = 0; i < res.length; i++) {
+            res[i]['id'] = i;
+        }
+        handleStockInfoChange(res); 
+        //setStockJson(res);
     }
     
     return (

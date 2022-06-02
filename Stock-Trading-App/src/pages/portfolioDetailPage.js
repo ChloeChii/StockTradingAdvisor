@@ -15,6 +15,7 @@ import NewDialog from '../features/portfolio/NewDialog';
 import PortfolioBar from '../features/portfolio/PortfolioBar';
 import StockItem from '../features/portfolio/StockItem';
 import Alert from '../features/utils/Alert';
+import IndividualStockInfo from '../features/portfolio/IndividualStockInfo'
 
 
 
@@ -34,6 +35,8 @@ const PortfolioDetailPage = () => {
     const [snackText, setSnackText] = React.useState("");
     const [snackSeverity, setSnackSeverity] = React.useState("success");
 
+    const [stockJson, setStockJson] = React.useState([]);
+
     // Get the portfolio information by account token and id
     React.useEffect(async () => {
         if (accountToken && id != undefined) {
@@ -51,6 +54,13 @@ const PortfolioDetailPage = () => {
             }
         }
     }, [id, accountToken]);
+
+    // Handle Individual Stock info
+    const handleStockInfoChange = (json) => {
+      console.log("stock info changed.")
+      console.log(json);
+      setStockJson(json); 
+    }
 
     // Handle snack notification close
     const handleSnackClose = (event, reason) => {
@@ -182,6 +192,7 @@ const PortfolioDetailPage = () => {
                                             <StockItem
                                                 key={stock.stockSymbol}
                                                 stockName={stock.stockSymbol}
+                                                handleStockInfoChange={handleStockInfoChange}
                                                 removeOnClick={() => {
                                                     removeStock(stock.stockSymbol);
                                                 }}
@@ -196,6 +207,9 @@ const PortfolioDetailPage = () => {
                         </Box>
                     </Paper>
                 </Box>
+                <Container maxWidth="lg">
+                    <IndividualStockInfo stockJson={stockJson}/>
+                </Container>
             </Container>
         </>
     );
