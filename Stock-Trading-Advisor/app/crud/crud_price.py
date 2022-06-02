@@ -22,8 +22,8 @@ class CRUDItem(CRUDBase[Price, Any, Any]):
     def get_prices_by_symbol(
         self, db: Session, date, symbol, sortby, order) -> List[Price]:
         cur = db.execute('SELECT * FROM price \
-            WHERE symbol = {} and timestamp = {} \
-            ORDER BY {} {}'.format(  "'{}'".format(symbol), "'{}'".format(date), sortby, order))
+            WHERE symbol = {}  \
+            ORDER BY {} {}'.format(  "'{}'".format(symbol), sortby, order))
         return (
             cur.all()
         )

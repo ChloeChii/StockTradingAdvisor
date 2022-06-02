@@ -23,20 +23,15 @@ const StockItem = (props) => {
 
     const searchStock = async (stockName) => {
         // POST request
-        // console.log(conditions);
         let data = [];
-        // let symbol = "AAPL";
         data.push('symbol');
         data.push(stockName);
-        // console.log(data, symbol);
         const res = await PortfolioAPI.SearchStockBySymbol(data, stockName);
-        //console.log("res:" + res);
         console.log(res);
         for (var i = 0; i < res.length; i++) {
             res[i]['id'] = i;
         }
         handleStockInfoChange(res); 
-        //setStockJson(res);
     }
     
     return (
