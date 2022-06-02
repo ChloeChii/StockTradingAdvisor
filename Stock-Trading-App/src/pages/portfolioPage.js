@@ -1,20 +1,20 @@
-import * as React from 'react';
-import { useNavigate } from "react-router-dom";
-import { useCookies } from 'react-cookie';
-import { useSelector, useDispatch } from 'react-redux'
-
-import Container from '@mui/material/Container';
-import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
 import Snackbar from '@mui/material/Snackbar';
-
-import PortfolioBar from '../features/portfolio/PortfolioBar'
-import PortfolioItem from '../features/portfolio/PortfolioItem'
-import NewDialog from '../features/portfolio/NewDialog'
+import * as React from 'react';
+import { useCookies } from 'react-cookie';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from "react-router-dom";
+import PortfolioAPI from '../api/PortfolioAPI';
+import NewDialog from '../features/portfolio/NewDialog';
+import PortfolioBar from '../features/portfolio/PortfolioBar';
+import PortfolioItem from '../features/portfolio/PortfolioItem';
 import Alert from '../features/utils/Alert';
 
-import PortfolioAPI from '../api/PortfolioAPI'
+
+
 
 
 const PortfolioPage = () => {
@@ -72,7 +72,7 @@ const PortfolioPage = () => {
         }
         try {
             const newPortfolioItem = await PortfolioAPI.CreatePortfolio(newPortfolioName, accountToken);
-            if (newPortfolioItem.id != undefined) {
+            if (newPortfolioItem.id !== undefined) {
                 setPortfolio([...portfolios, newPortfolioItem]);
                 setNewPortfolioName("");
                 triggerSnack("success", "Create succeed!");

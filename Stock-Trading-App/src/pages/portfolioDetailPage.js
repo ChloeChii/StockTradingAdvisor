@@ -11,11 +11,11 @@ import {
     useParams
 } from "react-router-dom";
 import PortfolioAPI from '../api/PortfolioAPI';
+import IndividualStockInfo from '../features/portfolio/IndividualStockInfo';
 import NewDialog from '../features/portfolio/NewDialog';
 import PortfolioBar from '../features/portfolio/PortfolioBar';
 import StockItem from '../features/portfolio/StockItem';
 import Alert from '../features/utils/Alert';
-import IndividualStockInfo from '../features/portfolio/IndividualStockInfo'
 
 
 
@@ -39,7 +39,7 @@ const PortfolioDetailPage = () => {
 
     // Get the portfolio information by account token and id
     React.useEffect(async () => {
-        if (accountToken && id != undefined) {
+        if (accountToken && id !== undefined) {
             try {
                 const result = await PortfolioAPI.GetPortfolioDetail(id, accountToken);
                 if (result) {
@@ -79,12 +79,12 @@ const PortfolioDetailPage = () => {
 
     // Add stock to this portfolio and refresh the page
     const addStock = React.useCallback(async () => {
-        if (!accountToken || !newStockSymbol || id == undefined) {
+        if (!accountToken || !newStockSymbol || id === undefined) {
             return;
         }
         try {
             const newPortfolioDetail = await PortfolioAPI.AddStockToPortfolio(id, newStockSymbol, accountToken);
-            if (newPortfolioDetail.portfolioName != undefined) {
+            if (newPortfolioDetail.portfolioName !== undefined) {
                 setPortfolioDetail(newPortfolioDetail);
                 setNewStockSymbol("");
                 triggerSnack("success", "Add succeed!");
@@ -119,12 +119,12 @@ const PortfolioDetailPage = () => {
 
     // Add the stock from this portfolio
     const removeStock = React.useCallback(async (newStockSymbol) => {
-        if (!accountToken || !newStockSymbol || id == undefined) {
+        if (!accountToken || !newStockSymbol || id === undefined) {
             return;
         }
         try {
             const newPortfolioDetail = await PortfolioAPI.RemoveStockFromPortfolio(id, newStockSymbol, accountToken);
-            if (newPortfolioDetail.portfolioName != undefined) {
+            if (newPortfolioDetail.portfolioName !== undefined) {
                 setPortfolioDetail(newPortfolioDetail);
                 setNewStockSymbol("");
                 triggerSnack("success", "Remove succeed!");
@@ -186,7 +186,7 @@ const PortfolioDetailPage = () => {
                                 spacing={1}
                             >
                                 {
-                                    (portfolioDetail.stocks != undefined && portfolioDetail.stocks.length > 0)
+                                    (portfolioDetail.stocks !== undefined && portfolioDetail.stocks.length > 0)
                                         ?
                                         portfolioDetail.stocks.map((stock) =>
                                             <StockItem
