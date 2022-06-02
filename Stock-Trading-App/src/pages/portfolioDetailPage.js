@@ -1,23 +1,24 @@
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
+import Snackbar from '@mui/material/Snackbar';
+import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import { useCookies } from 'react-cookie';
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux';
 import {
     useParams
 } from "react-router-dom";
-
-import Container from '@mui/material/Container';
-import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import Snackbar from '@mui/material/Snackbar';
-
-import PortfolioBar from '../features/portfolio/PortfolioBar'
-import StockItem from '../features/portfolio/StockItem'
-import NewDialog from '../features/portfolio/NewDialog'
+import PortfolioAPI from '../api/PortfolioAPI';
+import NewDialog from '../features/portfolio/NewDialog';
+import PortfolioBar from '../features/portfolio/PortfolioBar';
+import StockItem from '../features/portfolio/StockItem';
 import Alert from '../features/utils/Alert';
+import IndividualStockInfo from '../features/portfolio/IndividualStockInfo'
 
-import PortfolioAPI from '../api/PortfolioAPI'
+
+
 
 
 const PortfolioDetailPage = () => {
@@ -33,6 +34,8 @@ const PortfolioDetailPage = () => {
     const [isSnackOpen, setSnackOpen] = React.useState(false);
     const [snackText, setSnackText] = React.useState("");
     const [snackSeverity, setSnackSeverity] = React.useState("success");
+
+    const [stockJson, setStockJson] = React.useState([]);
 
     // Get the portfolio information by account token and id
     React.useEffect(async () => {
@@ -51,6 +54,13 @@ const PortfolioDetailPage = () => {
             }
         }
     }, [id, accountToken]);
+
+    // Handle Individual Stock info
+    const handleStockInfoChange = (json) => {
+      console.log("stock info changed.")
+      console.log(json);
+      setStockJson(json); 
+    }
 
     // Handle snack notification close
     const handleSnackClose = (event, reason) => {
@@ -86,6 +96,26 @@ const PortfolioDetailPage = () => {
 
 
     }, [accountToken, newStockSymbol, id, setPortfolioDetail])
+
+    // Search stock by symbol and refresh the page
+    // const searchStockBySymbol = React.useCallback(async () => {
+    //     if (!accountToken || !newStockSymbol || id == undefined) {
+    //         return;
+    //     }
+    //     try {
+    //         const newPortfolioDetail = await PortfolioAPI.SearchStock(newStockSymbol);
+    //         if (newPortfolioDetail.portfolioName != undefined) {
+    //             setPortfolioDetail(newPortfolioDetail);
+    //             setNewStockSymbol("");
+    //             triggerSnack("success", "Add succeed!");
+    //         }
+    //     } catch (error) {
+    //         console.log(error);
+    //         triggerSnack("error", "Some error happened, please check the console");
+    //     }
+
+
+    // }, [accountToken, newStockSymbol, id, setPortfolioDetail])
 
     // Add the stock from this portfolio
     const removeStock = React.useCallback(async (newStockSymbol) => {
@@ -162,6 +192,7 @@ const PortfolioDetailPage = () => {
                                             <StockItem
                                                 key={stock.stockSymbol}
                                                 stockName={stock.stockSymbol}
+                                                handleStockInfoChange={handleStockInfoChange}
                                                 removeOnClick={() => {
                                                     removeStock(stock.stockSymbol);
                                                 }}
@@ -176,6 +207,9 @@ const PortfolioDetailPage = () => {
                         </Box>
                     </Paper>
                 </Box>
+                <Container maxWidth="lg">
+                    <IndividualStockInfo stockJson={stockJson}/>
+                </Container>
             </Container>
         </>
     );

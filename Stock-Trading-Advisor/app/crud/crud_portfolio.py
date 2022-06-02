@@ -1,12 +1,13 @@
 from typing import Any, Dict, Optional, Union
-import psycopg2
-from psycopg2 import errors
-from sqlalchemy.orm import Session
 
+import psycopg2
 from app.core.security import get_password_hash, verify_password
 from app.crud.base import CRUDBase
 from app.models.portfolio import Portfolio, PortfolioStock
-from app.schemas.portfolio import PortfolioCreate, PortfolioUpdate, PortfolioStockCreate
+from app.schemas.portfolio import (PortfolioCreate, PortfolioStockCreate,
+                                   PortfolioUpdate)
+from psycopg2 import errors
+from sqlalchemy.orm import Session
 
 ################## 
 # Portfolio Stocks
@@ -50,7 +51,7 @@ class CRUDPortfolio(CRUDBase[Portfolio, PortfolioCreate, PortfolioUpdate]):
     """
     def add_stock(self, db: Session, *, portfolio: Portfolio, symbol: str) -> Optional[Portfolio]:
         try:
-            stock_to_add = PortfolioStockCreate(stockSymbol=symbol, portfolioId=portfolio.id)
+            stock_to_add = PortfolioStockCreate(stockSymbol=symbol.upper(), portfolioId=portfolio.id)
             add_stock_obj = portfolio_stock.create(db, obj_in=stock_to_add)
             portfolio.stocks.append(add_stock_obj)
             db.commit()

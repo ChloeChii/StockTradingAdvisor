@@ -103,7 +103,7 @@ export default function SelectFilter(props) {
                     md={7}
                 >
                     {
-                        (conditionItem.filterIdx > 1 || conditionItem.isAdvanced)
+                        (conditionItem.filterIdx >= 0 || conditionItem.isAdvanced)
                         &&
                         <Grid
                             item
@@ -133,7 +133,7 @@ export default function SelectFilter(props) {
                         </Grid>
                     }
                     {
-                        (conditionItem.filterIdx > 1 || conditionItem.isAdvanced)
+                        (conditionItem.filterIdx >= 0 || conditionItem.isAdvanced)
                         &&
                         <Grid
                             container

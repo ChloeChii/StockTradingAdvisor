@@ -15,7 +15,6 @@ import SignUpPage from './pages/signUpPage';
 
 
 
-
 // Set the primarty theme color
 const theme = createTheme({
     palette: {
@@ -48,6 +47,8 @@ const App = () => {
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/portfolio" element={<PortfolioPage />} />
                 <Route path="/portfolio/:id" element={<PortfolioDetailPage />} />
+                <Route path="/individualstock" element={<individualStockPage />} />
+
             </Routes>
         </ThemeProvider>
     );

@@ -18,6 +18,16 @@ class CRUDItem(CRUDBase[Price, Any, Any]):
         return (
             cur.all()
         )
+    
+    def get_prices_by_symbol(
+        self, db: Session, date, symbol, sortby, order) -> List[Price]:
+        cur = db.execute('SELECT * FROM price \
+            WHERE symbol = {}  \
+            ORDER BY {} {}'.format(  "'{}'".format(symbol), sortby, order))
+        return (
+            cur.all()
+        )
+        
         
     def get_overview_by_date(
         self, db: Session, date, sortby, order) -> List[Price]:
@@ -30,9 +40,7 @@ class CRUDItem(CRUDBase[Price, Any, Any]):
         self, db: Session, date, filter, sortby, order) -> List[Price]:
         cond_sql = ' AND '.join(filter)
         # 0422 add Open,Close,High,Low indices
-        # JHCHI
         # purpose: deal with open/close/high/low price
-        # add 11 lines start from next line
         filt = filter[0].split()[0]
         # filt2 = filter[0].split()[2]
 

@@ -1,21 +1,39 @@
-import * as React from 'react';
-
-import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
 import Fade from '@mui/material/Fade';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import * as React from 'react';
+import PortfolioAPI from '../../api/PortfolioAPI';
+
+
 
 // Stock list item
 const StockItem = (props) => {
 
     const [shouldRaised, setRaised] = React.useState(false);
+    //const [stockJson, setStockJson] = React.useState([]);
     const {
         removeOnClick = () => { },
-        stockName = ""
+        stockName = "",
+        handleStockInfoChange,
     } = props
 
+    const searchStock = async (stockName) => {
+        // POST request
+        let data = [];
+        data.push('symbol');
+        data.push(stockName);
+        const res = await PortfolioAPI.SearchStockBySymbol(data, stockName);
+        console.log(res);
+        for (var i = 0; i < res.length; i++) {
+            res[i]['id'] = i;
+        }
+        handleStockInfoChange(res); 
+    }
+    
     return (
         <Grid item xs={12}>
             <Card
@@ -42,9 +60,10 @@ const StockItem = (props) => {
                             flexGrow: 1
                         }}
                     >
-                        <Typography variant="h4" sx={{ fontSize: 24 }} color="text.primary">
+                        <Typography variant="h4" sx={{ fontSize: 24 }} color="text.primary" >
                             {stockName}
                         </Typography>
+                        <Button onClick={() => searchStock(stockName)}>View Stock</Button>
                     </Grid>
                     <Fade in={shouldRaised}>
                         <Grid
