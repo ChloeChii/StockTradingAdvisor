@@ -151,7 +151,6 @@ const PortfolioDetailPage = () => {
                     newName={newStockSymbol}
                     setNewName={setNewStockSymbol}
                     createOnClick={addStock}
-                    // searchOnClick={searchStockBySymbol}
                 />
                 <Box
                     sx={{
