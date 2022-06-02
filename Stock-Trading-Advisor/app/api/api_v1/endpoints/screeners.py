@@ -225,7 +225,8 @@ def get_backtest_result(
         newPricesIn[-1]["buy price"] = inPrice
         newPricesIn[-1]["sell price"] = outPrice
         newPricesIn[-1]["profit (%)"] = round((outPrice - inPrice) * 100 / inPrice, 2)
-    
+        del newPricesIn[-1]["close"]
+        
     return newPricesIn
 
     # preprocess filter
