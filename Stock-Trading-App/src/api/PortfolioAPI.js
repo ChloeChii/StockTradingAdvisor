@@ -125,9 +125,9 @@ const PortfolioAPI = {
     },
     SearchStockBySymbol: async (data, symbol) => {
         try {
+           
             const res = await axios.post(
-                process.env.REACT_APP_API_ENDPOINT + "/api/v1/portfolios/individualstock?symbol=" + symbol + "&sortby=timestamp&order=DESC",
-                data,
+                process.env.REACT_APP_API_ENDPOINT + "/api/v1/portfolios/individualstock?symbol=" + symbol + "&sortby=timestamp&order=DESC", data,
                 {
                     'Content-Type': 'application/json'
                 });
@@ -135,10 +135,12 @@ const PortfolioAPI = {
                 throw Error(res.statusText);
             }
             return res.data;
+
+            // return res.redirect('/individualstock');
         } catch (error) {
             throw error.response.data.detail;
         }
-    }
+    },
 }
 
 export default PortfolioAPI;

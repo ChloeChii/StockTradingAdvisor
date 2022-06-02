@@ -24,13 +24,6 @@ export default function Screener() {
     // Get filter list and set it to the state
     React.useEffect(async () => {
         const filterList = await ScreenerAPI.GetFilterList();
-        /**
-         * date:04222022
-         * change:add code
-         * function: sort by alphabet
-         * author:JHCHI
-         * lines: this line + 5 lines
-         */
         filterList.sort((a, b) => (a.filter_name > b.filter_name) ? 1 : ((b.filter_name > a.filter_name) ? -1 : 0))
         for (var i = 0; i < filterList.length; i++) {
             filterList[i]['id'] = i;
