@@ -204,9 +204,9 @@ export default function Screener() {
                                         variant='contained'
                                         color='primary'
                                         style={{ backgroundColor: "#707070" }}
-                                        onClick={() => addItem(true, false)}
+                                        onClick={() => addItem(false, true)}
                                     >
-                                        + Date
+                                        + ADVANCED
                                     </Button>
                                 </Grid>
                                 <Grid
@@ -216,9 +216,9 @@ export default function Screener() {
                                         variant='contained'
                                         color='primary'
                                         style={{ backgroundColor: "#707070" }}
-                                        onClick={() => addItem(false, true)}
+                                        onClick={() => addItem(true, false)}
                                     >
-                                        + ADVANCED
+                                        + Date
                                     </Button>
                                 </Grid>
                             </Grid>
