@@ -89,7 +89,7 @@ export default function Screener() {
             // If this is the advance filter
             if (conditions[i]['isAdvanced'] == true) {
                 data.push(conditions[i]['formula']);
-            } else {
+            } else if (conditions[i]['isDate'] == false){
                 data.push(filterList[conditions[i]['filterIdx']]['filter_name']);
             }
             if (conditions[i]['comparison'] === 10) {
