@@ -38,24 +38,25 @@ def isFormulaSatisfied(stock, overview, formula, comparison, value1, value2):
     try:
         formulaValue = eval(formula)
         if(comparison == "between"):
-            return min(value1, value2) <= formulaValue and formulaValue <= max(value1, value2)
+            return (min(value1, value2) <= formulaValue and formulaValue <= max(value1, value2), formula, formulaValue)
         else:
             comparison = comparison.replace("=", "==")
 #            print(stock["symbol"])
 #            print(str(formulaValue) + comparison + str(value1))
 #            print(eval(str(formulaValue) + comparison + str(value1)))
-            return eval(str(formulaValue) + comparison + str(value1))
+            return (eval(str(formulaValue) + comparison + str(value1)), formula, formulaValue)
             
     except TypeError: # Return false if any value not exist, or divide by zero, or etc.
-        return False
+        return (False, 0, 0)
     except ZeroDivisionError:
-        return False
+        return (False, 0, 0)
         
 def filtering(db, date, filter, sortby, order, attributes = []):
     stocks = crud.price.get_prices_by_date(db=db, date=date, sortby=sortby, order=order)
     overview = crud.price.get_overview_by_date(db=db, date=date, sortby=sortby, order=order)
     newStocks = []
     
+    print(filter)
     print("total %d stocks" % len(stocks))
     
     symbolToIndexOverview = {}
@@ -65,14 +66,18 @@ def filtering(db, date, filter, sortby, order, attributes = []):
     for i in range(len(stocks)):
         satisfied = True
         j = 0
+        attributesToAdd = {}
         while j < len(filter):
             if(filter[j + 1].lower() == "between"):
-                satisfied = satisfied and isFormulaSatisfied(stocks[i], overview[symbolToIndexOverview[stocks[i]["symbol"]]], filter[j], "between", filter[j + 2], filter[j + 3])
+                sat = isFormulaSatisfied(stocks[i], overview[symbolToIndexOverview[stocks[i]["symbol"]]], filter[j], "between", filter[j + 2], filter[j + 3])
+                satisfied = satisfied and sat[0]
+                attributesToAdd[sat[1]] = sat[2]
                 j = j + 4
             else:
-                satisfied = satisfied and isFormulaSatisfied(stocks[i], overview[symbolToIndexOverview[stocks[i]["symbol"]]], filter[j], filter[j + 1], filter[j + 2], 0)
+                sat = isFormulaSatisfied(stocks[i], overview[symbolToIndexOverview[stocks[i]["symbol"]]], filter[j], filter[j + 1], filter[j + 2], 0)
+                satisfied = satisfied and sat[0]
+                attributesToAdd[sat[1]] = sat[2]
                 j = j + 3
-                
             if(not satisfied):
                 break
         if(satisfied):
@@ -84,7 +89,11 @@ def filtering(db, date, filter, sortby, order, attributes = []):
                 for key in overview[symbolToIndexOverview[stocks[i]["symbol"]]].keys():
                     if(key.lower() in attributes):
                         d[key.lower()] = overview[symbolToIndexOverview[stocks[i]["symbol"]]][key]
-                        
+                
+                # add custom formula to attributes
+                for key in attributesToAdd.keys():
+                    d[key] = round(attributesToAdd[key], 2)
+                
                 newStocks.append(d)
             else:
                 newStocks.append(stocks[i])
