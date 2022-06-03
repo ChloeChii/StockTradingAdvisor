@@ -48,11 +48,11 @@ export default function Screener() {
     }
 
     // Add new filter
-    const addItem = (isAdvanced) => {
+    const addItem = (isDate, isAdvanced) => {
         // Limit dateItem to 1
-        if (isAdvanced) {
+        if (isDate) {
           for (var i = 0; i < conditions.length; i++) {
-            if (conditions[i].isAdvanced) return;
+            if (conditions[i].isDate) return;
           } 
         }
         let newCondition = [...conditions];
@@ -63,6 +63,7 @@ export default function Screener() {
             value1: 0,
             value2: 0,
             isAdvanced: isAdvanced,
+            isDate: isDate,
             error: false,
             id: uuidv4(),
         });
@@ -86,7 +87,9 @@ export default function Screener() {
         let dateIdx = -1;
         for (var i = 0; i < conditions.length; i++) {
             // If this is the advance filter
-            if (conditions[i]['isAdvanced'] != true) {
+            if (conditions[i]['isAdvanced'] == true) {
+                data.push(conditions[i]['formula']);
+            } else {
                 data.push(filterList[conditions[i]['filterIdx']]['filter_name']);
             }
             if (conditions[i]['comparison'] === 10) {
@@ -103,7 +106,7 @@ export default function Screener() {
                 data.push(conditions[i]['value1']);
             } else {
                 // If comparison is between 
-                if (conditions[i].isAdvanced) {
+                if (conditions[i].isDate) {
                   dateIn = conditions[i]['value1'];
                   dateOut = conditions[i]['value2'];
                   dateIdx = i;
@@ -201,9 +204,21 @@ export default function Screener() {
                                         variant='contained'
                                         color='primary'
                                         style={{ backgroundColor: "#707070" }}
-                                        onClick={() => addItem(true)}
+                                        onClick={() => addItem(true, false)}
                                     >
                                         + Date
+                                    </Button>
+                                </Grid>
+                                <Grid
+                                    item
+                                >
+                                    <Button
+                                        variant='contained'
+                                        color='primary'
+                                        style={{ backgroundColor: "#707070" }}
+                                        onClick={() => addItem(false, true)}
+                                    >
+                                        + ADVANCED
                                     </Button>
                                 </Grid>
                             </Grid>

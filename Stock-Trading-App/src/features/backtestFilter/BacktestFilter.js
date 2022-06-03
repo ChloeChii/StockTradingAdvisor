@@ -40,6 +40,112 @@ export default function BacktestFilter(props) {
         handleConditionChange(itemIndex, newCond);
     };
 
+    let item, filter;
+    if (conditionItem.isDate) {
+      item = 
+      <TextField
+          disabled
+          id="standard-disabled"
+          label="Date"
+          variant="outlined"
+          value={conditionItem.formula}
+          onChange={(e) => {
+              handleStateChange(e, "formula")
+          }}
+          fullWidth
+      />;
+      filter = 
+      <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">Comparator</InputLabel>
+          <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={conditionItem.comparison}
+              label="Comparator"
+              name="Comparator"
+              onChange={(e) => {
+                  handleStateChange(e, "comparison")
+              }}
+          >
+              <MenuItem value={40}>between</MenuItem>
+          </Select>
+      </FormControl>;
+    } else if (conditionItem.isAdvanced) {
+      item = 
+      <TextField
+          id="standard-basic-value2"
+          label="Custom formula"
+          variant="outlined"
+          value={conditionItem.formula}
+          onChange={(e) => {
+              handleStateChange(e, "formula")
+          }}
+          fullWidth
+      />;
+      filter = 
+      <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">Comparator</InputLabel>
+          <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={conditionItem.comparison}
+              label="Comparator"
+              name="Comparator"
+              onChange={(e) => {
+                  handleStateChange(e, "comparison")
+              }}
+          >
+              <MenuItem value={10}>greater than</MenuItem>
+              <MenuItem value={20}>less than</MenuItem>
+              <MenuItem value={30}>equal to</MenuItem>
+              <MenuItem value={40}>between</MenuItem>
+          </Select>
+      </FormControl>;
+    } else {
+      item = 
+      <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">Filter Name</InputLabel>
+          <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={conditionItem.filterIdx}
+              label="Filter Name"
+              name="Filter Name"
+              onChange={(e) => {
+                  handleStateChange(e, "filterIdx")
+              }}
+          >
+              {filterList.map((filter) =>
+                  <MenuItem
+                      key={filter['id']}
+                      value={filter['id']}
+                  >
+                      {filter['filter_name']}
+                  </MenuItem>)
+              }
+          </Select>
+      </FormControl>;
+      filter =
+      <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">Comparator</InputLabel>
+          <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={conditionItem.comparison}
+              label="Comparator"
+              name="Comparator"
+              onChange={(e) => {
+                  handleStateChange(e, "comparison")
+              }}
+          >
+              <MenuItem value={10}>greater than</MenuItem>
+              <MenuItem value={20}>less than</MenuItem>
+              <MenuItem value={30}>equal to</MenuItem>
+              <MenuItem value={40}>between</MenuItem>
+          </Select>
+      </FormControl>;
+    }
+
     return (
         <Item>
             <Grid
@@ -58,44 +164,7 @@ export default function BacktestFilter(props) {
                     md={4}
                     style={{ padding: 6, fontSize: '20px' }}
                 >
-                    {
-                        conditionItem.isAdvanced == false ?
-                            <FormControl fullWidth>
-                                <InputLabel id="demo-simple-select-label">Filter Name</InputLabel>
-                                <Select
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
-                                    value={conditionItem.filterIdx}
-                                    label="Filter Name"
-                                    name="Filter Name"
-                                    onChange={(e) => {
-                                        handleStateChange(e, "filterIdx")
-                                    }}
-                                >
-                                    {filterList.map((filter) =>
-                                        <MenuItem
-                                            key={filter['id']}
-                                            value={filter['id']}
-                                        >
-                                            {filter['filter_name']}
-                                        </MenuItem>)
-                                    }
-                                </Select>
-                            </FormControl>
-                            :
-                            <TextField
-                                disabled
-                                id="standard-disabled"
-                                label="Date"
-                                variant="outlined"
-                                value={conditionItem.formula}
-                                onChange={(e) => {
-                                    handleStateChange(e, "formula")
-                                }}
-                                fullWidth
-                            />
-                    }
-
+                    { item }
                 </Grid>
                 <Grid
                     container
@@ -113,43 +182,7 @@ export default function BacktestFilter(props) {
                             md={6}
                             style={{ padding: 6 }}
                         >
-                        { 
-                            conditionItem.isAdvanced == false ? 
-                            <FormControl fullWidth>
-                                <InputLabel id="demo-simple-select-label">Comparator</InputLabel>
-                                <Select
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
-                                    value={conditionItem.comparison}
-                                    label="Comparator"
-                                    name="Comparator"
-                                    onChange={(e) => {
-                                        handleStateChange(e, "comparison")
-                                    }}
-                                >
-                                    <MenuItem value={10}>greater than</MenuItem>
-                                    <MenuItem value={20}>less than</MenuItem>
-                                    <MenuItem value={30}>equal to</MenuItem>
-                                    <MenuItem value={40}>between</MenuItem>
-                                </Select>
-                            </FormControl>
-                            :
-                            <FormControl fullWidth>
-                                <InputLabel id="demo-simple-select-label">Comparator</InputLabel>
-                                <Select
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
-                                    value={conditionItem.comparison}
-                                    label="Comparator"
-                                    name="Comparator"
-                                    onChange={(e) => {
-                                        handleStateChange(e, "comparison")
-                                    }}
-                                >
-                                    <MenuItem value={40}>between</MenuItem>
-                                </Select>
-                            </FormControl>
-                        }
+                        { filter }
                         </Grid>
                     }
                     {
